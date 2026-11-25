@@ -1,0 +1,8 @@
+{
+  "appId": "com.dndtoolkit.app",
+  "appName": "D&D Toolkit",
+  "webDir": "dist",
+  "android": {
+    "backgroundColor": "#17120e"
+  }
+}

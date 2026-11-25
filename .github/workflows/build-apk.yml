@@ -34,8 +34,15 @@ jobs:
         npm install @capacitor/core @capacitor/cli @capacitor/android
         npx cap init "MyApp" "com.example.myapp" --web-dir=dist
         npx cap add android
-        # Фикс конфликта версий Kotlin
-        echo "configurations.all { resolutionStrategy { force 'org.jetbrains.kotlin:kotlin-stdlib:1.9.20'; force 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20'; force 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.20' } }" >> android/build.gradle
+        # Исключаем старый конфликтующий модуль из всех конфигураций Gradle
+        cat << 'EOF' >> android/build.gradle
+        allprojects {
+            configurations.all {
+                exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk8'
+                exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk7'
+            }
+        }
+        EOF
         npx cap sync android
 
     - name: Build Android APK
